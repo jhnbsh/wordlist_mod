@@ -18,7 +18,7 @@ This program should only be used to test authentication systems for which you ow
    1. Select all default settings, except for on the 'Customize Python'
    screen click "Add python.exe to Path" and choose "Will be installed to local hard-drive".
 
-   MacOS users: Linux users:  None, both python and the necessary libraries should be natively installed.
+   MacOS users:  None, both python and the necessary libraries should be natively installed.
 		
    Linux users:  None, both python and the necessary libraries should be natively installed.
 
@@ -29,8 +29,7 @@ This program should only be used to test authentication systems for which you ow
    
   During initial execution of the program a user will be prompted for two items: steps and timing delay.
   
-  The steps value is how many items you wish to process at a time.  For example, process 10 items then wait, or process 10,000 items then wait.
-  The timing delay value is how long the program should wait between steps.  Depending on the speed of your computer and size of your wordlist you may need to experiment with providing a timing delay to prevent a system lockup.  For small wordlists (<5Gb) it is generally safe to leave the timing delay to 0.
+  The steps value is how many items you wish to process at a time.  For example, process 10 items then wait, or process 10,000 items then wait.  The timing delay value is how long the program should wait between steps.  Depending on the speed of your computer and size of your wordlist you may need to experiment with providing a timing delay to prevent a system lockup (due to exhaustion of system resources).  For small wordlists (<5Gb) it is generally safe to leave the timing delay to 0.
   
 # Planned Updates:
 * Python v3 support.
