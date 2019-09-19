@@ -9,7 +9,23 @@ Information security practioners and penetration testers generally test authenti
 This program should only be used to test authentication systems for which you own or have been givnen permission to test.
 
 # Prerequisites:
+   Python v2 is needed to execute the script.  The following provides basic directions
+   on installing Python on your respective operating system.
 
-# Execution instructions
+   Windows users: As of Windows 8.1 you will need to install Python v2, then dnspython.
+   1. Download and install python from https://www.python.org/downloads/ . Note: Choose any version of Python that starts with "2", not "3".
+   1. Select all default settings, except for on the 'Customize Python'
+   screen click "Add python.exe to Path" and choose "Will be installed to local hard-drive".
 
+   MacOS users: Linux users:  None, both python and the necessary libraries should be natively installed.
+		
+   Linux users:  None, both python and the necessary libraries should be natively installed.
+
+# Execution instructions  
+  Run wordlist_mod from a command prompt or terminal window with:
+  
+    python wordlist_mod.py inputfile.txt outputfile.txt
+    
 # Planned Updates:
+* Python v3 support.
+* Add status indicators for each action's progress.
