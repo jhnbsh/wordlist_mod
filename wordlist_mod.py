@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-#Program: wordlist_mod v1.0
+#Program: wordlist_mod v1.1
 #Description: 
 #This python script performs a number of selectable actions designed to clean/edit a provided wordlist used in dictionary based password cracking.  
-#The input is a wordlist (dictionary) and the output is the modified wordlist based ont he user's selected acitons.
+#The input is a wordlist (dictionary) and the output is the modified wordlist based on the user's selected acitons.
 
 #Requried modules
-import sys, time, numpy as np
+import sys, time, numpy as np, base64, hashlib
 
 #Create variables
 user_selection = int
@@ -26,21 +26,21 @@ my_dictionary = list(open(inputfile, 'r'))
 
 print "\nYour file has been opened and contains this many entries:"
 print len(my_dictionary)
-varStep = input("\nEnter the number of steps: \n")
-print "\nThe recommended time delay between steps is .001 seconds."
+varStep = input("\nEnter the number of steps to perform (see the README file for info): \n")
+print "\nEnter the timing delay.  The recommended time delay between steps is .001 seconds (see the README file for info)."
 varTime = input("Enter your desired time delay between steps: \n")
 print ""
 
 ###START PROGRAM###
 
 #Ask user for action to perform
-while user_selection != 12:
+while user_selection != 16:
   #Reset varPP to 0 from previous loops.
   varPP = 0
   print "Choose one of the following:"
   print "1.  Remove preceding white space from every item (do this first)."
   print "2.  Return only unique entries (delete duplicates) for large (>1Gb) files. Does not preserve original order."
-  print "3.  Return only unique entries (delete duplicates) for small fies. Preserves original order."
+  print "3.  Return only unique entries (delete duplicates) for small (<1Gb) files. Preserves original order."
   print "4.  Sort list alphabetically."
   print "5.  Capitalize only the first letter of every item (remove whitespace first)."
   print "6.  Convert all letters to uppercase for every item."
@@ -48,8 +48,12 @@ while user_selection != 12:
   print "8.  Return only items greater than X."
   print "9.  Return only items less than X."
   print "10. Return only items between X and Y (inclusive)."
-  print "11. Write results to file."
-  print "12. Exit. \n"
+  print "11. Convert entries per line to base64."
+  print "12. Decode entries per line from base64."
+  print "13. Hash entries per line with md5."
+  print "14. Hash entries per line with sha1."
+  print "15. Write results to file."
+  print "16. Exit. \n"
   user_selection = input("Enter a number: \n")
 
   #User chose to remove preceeding white space.
@@ -318,8 +322,120 @@ while user_selection != 12:
       time.sleep(varTime)
     my_dictionary = new_dictionary
     print "\nDone. \n"
-  
+
+  #User chose to convert all items to base64.
   elif user_selection == 11:
+    #Outer loop creats groups of size len(array)/varStep.
+    for i1 in range(0,len(my_dictionary),varStep):
+      #Inner loop prints items from array.
+      for i2 in range(varStep):
+        #Condition check to prevent out-of-range errors.
+        if varPP + varStep <= len(my_dictionary):
+          #Print item from array.
+          my_dictionary[i2+varPP] = base64.b64encode(my_dictionary[i2+varPP])
+        #Condition to print any remainders due to devision. 
+        elif varPP + varStep > len(my_dictionary):
+          #Condition to stop printing beyond the array's lenth.
+          if varPP == len(my_dictionary):
+            #End of array reached, print nothing.
+            pass
+          #Print the remaining items.
+          else:
+            my_dictionary[varPP] = base64.b64encode(my_dictionary[varPP])
+            varPP = varPP + 1
+        else:
+          print "Nothing"
+      #Increment what is being printed.
+      varPP = varPP + varStep
+      #Pause in seconds.
+      time.sleep(varTime)
+    print "\nDone. \n"
+
+  #User chose to decode all items from base64.  Note: strip() will remove preceeding spaces that might have been encoded.
+  elif user_selection == 12:
+    #Outer loop creats groups of size len(array)/varStep.
+    for i1 in range(0,len(my_dictionary),varStep):
+      #Inner loop prints items from array.
+      for i2 in range(varStep):
+        #Condition check to prevent out-of-range errors.
+        if varPP + varStep <= len(my_dictionary):
+          #Print item from array.
+          my_dictionary[i2+varPP] = base64.b64decode(my_dictionary[i2+varPP]).strip()
+        #Condition to print any remainders due to devision. 
+        elif varPP + varStep > len(my_dictionary):
+          #Condition to stop printing beyond the array's lenth.
+          if varPP == len(my_dictionary):
+            #End of array reached, print nothing.
+            pass
+          #Print the remaining items.
+          else:
+            my_dictionary[varPP] = base64.b64decode(my_dictionary[varPP]).strip()
+            varPP = varPP + 1
+        else:
+          print "Nothing"
+      #Increment what is being printed.
+      varPP = varPP + varStep
+      #Pause in seconds.
+      time.sleep(varTime)
+    print "\nDone. \n"
+
+  #User chose to hash all items with md5.
+  elif user_selection == 13:
+    #Outer loop creats groups of size len(array)/varStep.
+    for i1 in range(0,len(my_dictionary),varStep):
+      #Inner loop prints items from array.
+      for i2 in range(varStep):
+        #Condition check to prevent out-of-range errors.
+        if varPP + varStep <= len(my_dictionary):
+          #Print item from array.
+          my_dictionary[i2+varPP] = hashlib.md5(my_dictionary[i2+varPP]).hexdigest()
+        #Condition to print any remainders due to devision. 
+        elif varPP + varStep > len(my_dictionary):
+          #Condition to stop printing beyond the array's lenth.
+          if varPP == len(my_dictionary):
+            #End of array reached, print nothing.
+            pass
+          #Print the remaining items.
+          else:
+            my_dictionary[varPP] = hashlib.md5(my_dictionary[varPP]).hexdigest()
+            varPP = varPP + 1
+        else:
+          print "Nothing"
+      #Increment what is being printed.
+      varPP = varPP + varStep
+      #Pause in seconds.
+      time.sleep(varTime)
+    print "\nDone. \n"
+
+  #User chose to hash all items with sha1.
+  elif user_selection == 14:
+    #Outer loop creats groups of size len(array)/varStep.
+    for i1 in range(0,len(my_dictionary),varStep):
+      #Inner loop prints items from array.
+      for i2 in range(varStep):
+        #Condition check to prevent out-of-range errors.
+        if varPP + varStep <= len(my_dictionary):
+          #Print item from array.
+          my_dictionary[i2+varPP] = hashlib.sha1(my_dictionary[i2+varPP]).hexdigest()
+        #Condition to print any remainders due to devision. 
+        elif varPP + varStep > len(my_dictionary):
+          #Condition to stop printing beyond the array's lenth.
+          if varPP == len(my_dictionary):
+            #End of array reached, print nothing.
+            pass
+          #Print the remaining items.
+          else:
+            my_dictionary[varPP] = hashlib.sha1(my_dictionary[varPP]).hexdigest()
+            varPP = varPP + 1
+        else:
+          print "Nothing"
+      #Increment what is being printed.
+      varPP = varPP + varStep
+      #Pause in seconds.
+      time.sleep(varTime)
+    print "\nDone. \n"
+  
+  elif user_selection == 15:
     #Write results to file.
     my_output = open(outputfile, 'w')
     for i1 in my_dictionary:
@@ -329,12 +445,10 @@ while user_selection != 12:
     print "The new length of your wordlist is ",len(my_dictionary)," lines."
     print "\nDone. \n"
 
-  elif user_selection == 12:
+  elif user_selection == 16:
     #Exit program.
     print "Exiting. \n"           
   else:
-    print "Try again."
+    print "\nInvalid selection.  Try again.\n"
 
 ###END PROGRAM###
-        
-        
