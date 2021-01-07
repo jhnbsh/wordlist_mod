@@ -1,10 +1,10 @@
-# wordlist_mod v1.0 Help File
+# wordlist_mod v1.1 Help File
 
 # Description:
 This python program performs a number of user defined actions that clean/edit a provided wordlist used in dictionary based password cracking.  The input is a wordlist (dictionary) and the output is the modified wordlist based on the user’s selected actions. 
 
 # Why is this program needed?:
-Information security practitioners and penetration testers generally test authentication systems by attempting to use default or previously compromised credentials.  Many wordlists found on the open Internet contain common passwords or those exposed in a separate breach.  Use of the wordlists provides the tester a means of knowing if weak or previously compromised passwords are used on the authentication system.  This program is useful for modifying such wordlists to remove duplicate items, unnecessary white space, or return only passwords of certain lengths.  This program has been specifically designed to process extremely large wordlists and has successfully edited a 50Gb file in testing.
+Information security practitioners and penetration testers generally test authentication systems by attempting to use default or previously compromised credentials.  Many wordlists found on the open Internet contain common passwords or those exposed in a separate breach.  Use of the wordlists provides the tester a means of knowing if weak or previously compromised passwords are used on the authentication system.  This program is useful for modifying such wordlists to remove duplicate items, unnecessary white space, or return only passwords of certain lengths.  This program was designed for processing extremely large wordlists (in gigabytes) sujbect to the host computer having enough RAM.
 
 # Disclaimer:
 This program should only be used to test authentication systems for which you own or have been given permission to test.  Do not use this program to edit wordlists which you intend to use for committing a crime.
@@ -29,8 +29,9 @@ This program should only be used to test authentication systems for which you ow
    
   During initial execution of the program a user will be prompted for two items: steps and timing delay.
   
-  The steps value is how many items you wish to process at a time.  For example, process 10 items then wait, or process 10,000 items then wait.  The timing delay value is how long the program should wait between steps.  Depending on the speed of your computer and size of your wordlist you may need to experiment with providing a timing delay to prevent a system lockup (due to exhaustion of system resources).  For small wordlists (<5Gb) it is generally safe to leave the timing delay to 0.
+  The steps value is how many items you wish to process at a time.  For example, process 10 items then wait, or process 10,000 items then wait.  The timing delay value is how long the program should wait between steps.  Depending on the speed of your computer and size of your wordlist you may need to experiment with providing a timing delay to prevent a system lockup caused by exhausting system resources.  For small wordlists (<1Gb) it is generally safe to leave the timing delay to 0.
   
 # Planned Updates:
 * Python v3 support.
 * Add status indicators for each action's progress.
+* Implement additional hashing algorithms.
