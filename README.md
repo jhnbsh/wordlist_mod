@@ -1,4 +1,4 @@
-# wordlist_mod v1.1 Help File
+# wordlist_mod v1.2 Help File
 
 # Description:
 This python program performs a number of user defined actions that clean/edit a provided wordlist used in dictionary based password cracking.  The input is a wordlist (dictionary) and the output is the modified wordlist based on the user’s selected actions. 
@@ -30,7 +30,10 @@ This program should only be used to test authentication systems for which you ow
   During initial execution of the program a user will be prompted for two items: steps and timing delay.
   
   The steps value is how many items you wish to process at a time.  For example, process 10 items then wait, or process 10,000 items then wait.  The timing delay value is how long the program should wait between steps.  Depending on the speed of your computer and size of your wordlist you may need to experiment with providing a timing delay to prevent a system lockup caused by exhausting system resources.  For small wordlists (<1Gb) it is generally safe to leave the timing delay to 0.
-  
+
+# Latest Updates
+* Added option to remove preceding (unwanted) characters.
+
 # Planned Updates:
 * Python v3 support.
 * Add status indicators for each action's progress.
