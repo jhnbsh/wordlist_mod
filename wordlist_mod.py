@@ -47,7 +47,7 @@ while user_selection != 18:
   print "6.  Capitalize only the first letter of every item (remove whitespace first)."
   print "7.  Convert all letters to uppercase for every item."
   print "8.  Convert all letters to lowercase for every item."
-  print "9.  Appned text to the end of every item."
+  print "9.  Append text to the end of every item."
   print "10. Return only items greater than X."
   print "11. Return only items less than X."
   print "12. Return only items between X and Y (inclusive)."
