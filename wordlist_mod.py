@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#Program: wordlist_mod v1.3
+#Program: wordlist_mod v1.4
 #Description: 
 #This python script performs a number of selectable actions designed to clean/edit a provided wordlist used in dictionary based password cracking.  
 #The input is a wordlist (dictionary) and the output is the modified wordlist based on the user's selected acitons.
@@ -13,6 +13,7 @@ user_selection = int
 varX = int
 varY = int
 varZ = int
+varSide = int
 varStep = int
 varPP = 0
 varTime = 0
@@ -27,15 +28,14 @@ my_dictionary = list(open(inputfile, 'r'))
 
 print "\nYour file has been opened and contains this many entries:"
 print len(my_dictionary)
-varStep = input("\nEnter the number of steps to perform (see the README file for info): \n")
-print "\nEnter the timing delay.  The recommended time delay between steps is .001 seconds (see the README file for info)."
-varTime = input("Enter your desired time delay between steps: \n")
+varStep = input("\nEnter the desired number of steps (See the README file for info.  If you don't know enter 1): \n")
+varTime = input("\nEnter your desired time delay between steps (See the README file for info. If you don't know enter 0): \n")
 print ""
 
 ###START PROGRAM###
 
 #Ask user for action to perform
-while user_selection != 18:
+while user_selection != 19:
   #Reset varPP to 0 from previous loops.
   varPP = 0
   print "Choose one of the following:"
@@ -44,19 +44,20 @@ while user_selection != 18:
   print "3.  Return only unique entries (delete duplicates) for small (<1Gb) files. Preserves original order."
   print "4.  Sort list alphabetically."
   print "5.  Remove a preceeding character frome every item (remove whitespace first)."
-  print "6.  Capitalize only the first letter of every item (remove whitespace first)."
-  print "7.  Convert all letters to uppercase for every item."
-  print "8.  Convert all letters to lowercase for every item."
-  print "9.  Append text to the end of every item."
-  print "10. Return only items greater than X."
-  print "11. Return only items less than X."
-  print "12. Return only items between X and Y (inclusive)."
-  print "13. Convert entries per line to base64."
-  print "14. Decode entries per line from base64."
-  print "15. Hash entries per line with md5."
-  print "16. Hash entries per line with sha1."
-  print "17. Write results to file."
-  print "18. Exit. \n"
+  print "6.  Split a string by a seperator then keep one side (remove whitespace first)."
+  print "7.  Capitalize only the first letter of every item (remove whitespace first)."
+  print "8.  Convert all letters to uppercase for every item."
+  print "9.  Convert all letters to lowercase for every item."
+  print "10. Append text to the end of every item."
+  print "11. Return only items greater than X."
+  print "12. Return only items less than X."
+  print "13. Return only items between X and Y (inclusive)."
+  print "14. Convert entries per line to base64."
+  print "15. Decode entries per line from base64."
+  print "16. Hash entries per line with md5."
+  print "17. Hash entries per line with sha1."
+  print "18. Write results to file."
+  print "19. Exit. \n"
   user_selection = input("Enter a number: \n")
 
   #User chose to remove preceeding white space.
@@ -132,7 +133,7 @@ while user_selection != 18:
     #Sort list (case sensitive)
     my_dictionary = np.sort(a=my_dictionary, kind='mergesort')
     print "\nDone. \n"
-  
+
   #User chose to replace a re-occuring character of each entry.
   elif user_selection == 5:
     print "\nRemove a preceeding character from each string (Ex: '/'' preceeds all entries)."
@@ -163,9 +164,52 @@ while user_selection != 18:
       #Pause in seconds.
       time.sleep(varTime)
     print "\nDone. \n"
+ 
+  #User chose to replace a re-occuring character of each entry.
+  elif user_selection == 6:
+    print "\nDivide a string by a specified character then keep either the left or right side of the original string."
+    print "Example: If the string is 'url/index.html', the dividing character is '/' and 'right' is chosen, then the returned string will be 'index.html'.\n"
+    print "Note: Strings are split from the left on the first occurance of the dividing character.\n"
+    varZ = input("What is the character will be the divider? Enter as 'character' (Ex: '/'): \n")
+    varSide = input("After being split, keep the Left or Right side of the string? Enter 0 or 1 (Left=0, Right=1): \n")
+    #Outer loop creats groups of size len(array)/varStep.
+    for i1 in range(0,len(my_dictionary),varStep):
+      #Inner loop prints items from array.
+      for i2 in range(varStep):
+        #Condition check to prevent out-of-range errors.
+        if varPP + varStep <= len(my_dictionary):
+          #Print item from array.
+          #Logic to ignore strings not containing varZ
+          if varZ in my_dictionary[i2+varPP]:
+            split_string = my_dictionary[i2+varPP].split(varZ,1)
+            my_dictionary[i2+varPP] = split_string[varSide]
+          else:
+            my_dictionary[i2+varPP] = my_dictionary[i2+varPP]
+        #Condition to print any remainders due to division. 
+        elif varPP + varStep > len(my_dictionary):
+          #Condition to stop printing beyond the array's lenth.
+          if varPP == len(my_dictionary):
+            #End of array reached, print nothing.
+            pass
+          #Print the remaining items.
+          else:
+            #Logic to ignore strings not containing varZ
+            if varZ in my_dictionary[i2+varPP]:
+                split_string = my_dictionary[varPP].split(varZ,1)
+                my_dictionary[varPP] = split_string[varSide]
+            else:
+                my_dictionary[varPP] = my_dictionary[varPP]
+            varPP = varPP + 1
+        else:
+          print "Nothing"
+      #Increment what is being printed.
+      varPP = varPP + varStep
+      #Pause in seconds.
+      time.sleep(varTime)
+    print "\nDone. \n"
 
   #User chose to capitilize the first letter of each entry.
-  elif user_selection == 6:
+  elif user_selection == 7:
     #Outer loop creats groups of size len(array)/varStep.
     for i1 in range(0,len(my_dictionary),varStep):
       #Inner loop prints items from array.
@@ -193,7 +237,7 @@ while user_selection != 18:
     print "\nDone. \n"
 
   #User chose to convert all items to uppercase.
-  elif user_selection == 7:
+  elif user_selection == 8:
     #Outer loop creats groups of size len(array)/varStep.
     for i1 in range(0,len(my_dictionary),varStep):
       #Inner loop prints items from array.
@@ -221,7 +265,7 @@ while user_selection != 18:
     print "\nDone. \n"
   
   #User chose to convert all items to lowercase.
-  elif user_selection == 8:
+  elif user_selection == 9:
     #Outer loop creats groups of size len(array)/varStep.
     for i1 in range(0,len(my_dictionary),varStep):
       #Inner loop prints items from array.
@@ -249,7 +293,7 @@ while user_selection != 18:
     print "\nDone. \n"
   
   #User chose to replace a re-occuring character of each entry.
-  elif user_selection == 9:
+  elif user_selection == 10:
     print "\nAppend text to the end of each item in the list (Ex: '.txt'' following all entries)."
     varZ = input("What is the text that needs to be appended? Enter as 'text' (Ex: '.txt'): \n")
     #Outer loop creats groups of size len(array)/varStep.
@@ -279,7 +323,7 @@ while user_selection != 18:
     print "\nDone. \n"
 
   #User chose to return only items greater than X.
-  elif user_selection == 10:
+  elif user_selection == 11:
     print "\nKeep strings >= X"
     varX = input("Enter X: \n")
     #create a temp arrary.
@@ -315,7 +359,7 @@ while user_selection != 18:
     print "\nDone. \n"
   
   #User chose to return only items less than X.
-  elif user_selection == 11:
+  elif user_selection == 12:
     print "\nKeep strings <= X"
     varX = input("Enter X: \n")
     #create a temp arrary.
@@ -351,7 +395,7 @@ while user_selection != 18:
     print "\nDone. \n"
   
   #User chose to return only items between X and Y inclusive.
-  elif user_selection == 12:
+  elif user_selection == 13:
     print "\nKeep strings >= X and <=Y"
     varX = input("Enter X: \n")
     varY = input("Enter Y: \n")
@@ -388,7 +432,7 @@ while user_selection != 18:
     print "\nDone. \n"
 
   #User chose to convert all items to base64.
-  elif user_selection == 13:
+  elif user_selection == 14:
     #Outer loop creats groups of size len(array)/varStep.
     for i1 in range(0,len(my_dictionary),varStep):
       #Inner loop prints items from array.
@@ -416,7 +460,7 @@ while user_selection != 18:
     print "\nDone. \n"
 
   #User chose to decode all items from base64.  Note: strip() will remove preceeding spaces that might have been encoded.
-  elif user_selection == 14:
+  elif user_selection == 15:
     #Outer loop creats groups of size len(array)/varStep.
     for i1 in range(0,len(my_dictionary),varStep):
       #Inner loop prints items from array.
@@ -444,7 +488,7 @@ while user_selection != 18:
     print "\nDone. \n"
 
   #User chose to hash all items with md5.
-  elif user_selection == 15:
+  elif user_selection == 16:
     #Outer loop creats groups of size len(array)/varStep.
     for i1 in range(0,len(my_dictionary),varStep):
       #Inner loop prints items from array.
@@ -472,7 +516,7 @@ while user_selection != 18:
     print "\nDone. \n"
 
   #User chose to hash all items with sha1.
-  elif user_selection == 16:
+  elif user_selection == 17:
     #Outer loop creats groups of size len(array)/varStep.
     for i1 in range(0,len(my_dictionary),varStep):
       #Inner loop prints items from array.
@@ -499,7 +543,7 @@ while user_selection != 18:
       time.sleep(varTime)
     print "\nDone. \n"
   
-  elif user_selection == 17:
+  elif user_selection == 18:
     #Write results to file.
     my_output = open(outputfile, 'w')
     for i1 in my_dictionary:
@@ -509,7 +553,7 @@ while user_selection != 18:
     print "The new length of your wordlist is ",len(my_dictionary)," lines."
     print "\nDone. \n"
 
-  elif user_selection == 18:
+  elif user_selection == 19:
     #Exit program.
     print "Exiting. \n"
 
