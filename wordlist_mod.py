@@ -6,7 +6,7 @@
 #The input is a wordlist (dictionary) and the output is the modified wordlist based on the user's selected acitons.
 
 #Requried modules
-import sys, time, numpy as np, base64, hashlib
+import sys, time, numpy as np, base64, hashlib, site
 
 #Create variables
 user_selection = int
